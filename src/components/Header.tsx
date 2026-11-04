@@ -7,6 +7,7 @@ import {
   FolderHeart,
   PlusCircle,
   HelpCircle,
+  FileDown,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -116,6 +117,16 @@ export const Header: React.FC<HeaderProps> = ({
                 {savedDecksCount}
               </span>
             </button>
+
+            <a
+              href="/CogniLearn_Project_Report.doc"
+              download="CogniLearn_Project_Report.doc"
+              title="Download Formal Academic Project Report (.doc)"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition-all shadow-sm"
+            >
+              <FileDown className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Report (.doc)</span>
+            </a>
           </nav>
 
           {/* Active Topic Badge / Quick Stats */}

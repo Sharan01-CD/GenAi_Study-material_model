@@ -146,7 +146,7 @@ Generate a valid JSON object matching this schema:
 Return ONLY valid JSON.
 """
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.8-flash",
         contents=prompt,
         config={"response_mime_type": "application/json"}
     )
@@ -222,7 +222,7 @@ Generate a valid JSON object with this exact structure:
 Return ONLY valid JSON.
 """
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.8-flash",
         contents=prompt,
         config={"response_mime_type": "application/json"}
     )

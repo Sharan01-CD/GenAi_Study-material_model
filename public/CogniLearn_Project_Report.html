@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CogniLearn - Academic Project Report</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm;
+    }
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12pt;
+      line-height: 1.6;
+      color: #111;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background-color: #fff;
+    }
+    .no-print-bar {
+      position: sticky;
+      top: 0;
+      background: #1e1b4b;
+      color: #fff;
+      padding: 12px 20px;
+      margin: -40px -20px 30px -20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      z-index: 100;
+    }
+    .btn {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover {
+      background: #4338ca;
+    }
+    @media print {
+      .no-print-bar {
+        display: none !important;
+      }
+      body {
+        padding: 0;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+    }
+    .page-break {
+      page-break-before: always;
+    }
+    .cover-title {
+      font-size: 20pt;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.3;
+      margin-top: 60px;
+      margin-bottom: 25px;
+    }
+    .cover-sub {
+      font-size: 12pt;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 40px;
+    }
+    .cover-submit {
+      font-size: 12pt;
+      text-align: center;
+      margin-top: 40px;
+      line-height: 1.6;
+    }
+    .institution {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 13pt;
+      line-height: 1.4;
+    }
+    h1 {
+      font-size: 18pt;
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 14pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 30px;
+      margin-bottom: 12px;
+      border-bottom: 1.5px solid #222;
+      padding-bottom: 4px;
+    }
+    h3 {
+      font-size: 12pt;
+      font-weight: bold;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+    p {
+      text-align: justify;
+      margin-bottom: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 8px 10px;
+      font-size: 11pt;
+      text-align: left;
+    }
+    th {
+      background-color: #f3f4f6;
+      font-weight: bold;
+    }
+    pre {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 10pt;
+      overflow-x: auto;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print-bar">
+    <div><strong>CogniLearn</strong> Academic Project Report (IFHE Hyderabad)</div>
+    <div style="display: flex; gap: 10px;">
+      <a href="/CogniLearn_Project_Report.doc" download class="btn" style="background: #059669;">
+        💾 Download Word (.DOC)
+      </a>
+      <button onclick="window.print()" class="btn">
+        🖨️ Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <div style="text-align: center; font-weight: bold; font-size: 13pt; letter-spacing: 1px; margin-top: 40px;">
+    A PROJECT REPORT ON
+  </div>
+
+  <div class="cover-title">
+    COGNILEARN: AUTONOMOUS GENERATIVE AI-POWERED STUDY MATERIAL AND ADAPTIVE ASSESSMENT GENERATION SYSTEM
+  </div>
+
+  <div class="cover-sub">
+    Submitted in partial fulfillment of the requirements for the award of the degree of<br>
+    <strong>BACHELOR OF TECHNOLOGY</strong><br>
+    IN ARTIFICIAL INTELLIGENCE & MACHINE LEARNING
+  </div>
+
+  <div class="cover-submit">
+    <strong>Submitted by:</strong><br><br>
+    <strong>Sharandeep Chilkuri</strong><br>
+    Enrollment / Regd. No.: <strong>23STUCHH010488</strong><br>
+    B.Tech – CSE (Artificial Intelligence & Machine Learning), Section: F<br>
+    Email: <em>chilkurisharandeep23@ifheindia.org</em>
+  </div>
+
+  <div class="institution">
+    <strong>ICFAI FOUNDATION FOR HIGHER EDUCATION (IFHE)</strong><br>
+    Faculty of Science and Technology (FST) / IBS Hyderabad<br>
+    Donthanapally, Shankarapalli Road, Hyderabad, Telangana – 501203
+  </div>
+
+  <div class="page-break"></div>
+
+  <h1>CERTIFICATE OF AUTHENTICITY</h1>
+  <p style="margin-top: 30px; line-height: 1.8;">
+    This is to certify that the project report entitled <strong>“CogniLearn: Autonomous Generative AI-Powered Study Material and Adaptive Assessment Generation System”</strong> is a bona fide record of academic project work carried out by <strong>Sharandeep Chilkuri</strong> (Student Regd. No.: <strong>23STUCHH010488</strong>), B.Tech – Artificial Intelligence & Machine Learning, Section F, under the Department of Computer Science & Engineering, Faculty of Science & Technology (FST), IFHE University, Hyderabad.
+  </p>
+  <p style="line-height: 1.8;">
+    The work presented in this report concerns the end-to-end design, implementation, latency benchmarking, and cloud deployment of an autonomous generative artificial intelligence system that transforms raw academic documents and multi-page PDFs into structured curriculum guides, active-recall 3D flashcards, high-yield cheat sheets, and diagnostic psychometric examinations with automated rubric grading and spaced repetition memory tracking.
+  </p>
+  <div style="margin-top: 80px;">
+    <strong>Faculty Mentor / Evaluator</strong><br>
+    Department of Computer Science & Engineering<br>
+    Faculty of Science & Technology, IFHE University, Hyderabad
+  </div>
+
+  <div class="page-break"></div>
+
+  <h1>ABSTRACT</h1>
+  <p>
+    The rapid acceleration of generative artificial intelligence and large language models (LLMs) provides unprecedented opportunities to revolutionize personalized education, active recall, and continuous diagnostic self-assessment. Traditional study approaches often suffer from passive reading, lack of immediate feedback, and disconnected assessment tools.
+  </p>
+  <p>
+    This project presents <strong>CogniLearn</strong>, an autonomous, end-to-end generative AI educational platform capable of transforming raw academic text and multi-page PDF documents into comprehensive pedagogical study materials and rigorous diagnostic evaluations. Powered by Google's state-of-the-art <strong>Gemini Flash</strong> multimodal model via the <code>@google/genai</code> TypeScript SDK and Python SDK, the platform implements strict JSON schema enforcement to produce structured curriculum outputs, including:
+  </p>
+  <ul>
+    <li>Executive summaries with foundational mental models and learning objectives;</li>
+    <li>Modular curriculum breakdowns with Feynman-style analogies, real-world case studies, and common pitfall warnings;</li>
+    <li>High-yield cheat sheets featuring crucial definitions, formulas, and mnemonics;</li>
+    <li>3D interactive flashcards optimized for active recall;</li>
+    <li>Multi-format diagnostic question suites comprising multiple-choice questions (MCQs), clinical/applied scenario cases, true/false conceptual checks, and open-ended short answers with real-time automated rubric scoring.</li>
+  </ul>
+  <p>
+    To support longitudinal retention, CogniLearn incorporates a <strong>Smart Study Scheduler</strong> based on Ebbinghaus' forgetting curve, actively tracking study intervals and issuing automated alerts when a deck exceeds 24 hours without review. The system is engineered as a dual-architecture deployment: a high-performance full-stack TypeScript/React SPA running on Express and Vite, alongside a native Python Streamlit application designed for rapid cloud deployment. Latency optimization techniques—such as parallelized asynchronous generation, prompt minimization, and transient error backoff mechanisms—reduce generation latency to under 5 seconds for focused question suites.
+  </p>
+  <p><strong>Keywords:</strong> Generative AI, Large Language Models, Gemini Flash, Automated Question Generation, Active Recall, Spaced Repetition, Streamlit, React, TypeScript.</p>
+  <p><strong>PROJECT AIM:</strong> The objective of this project is to architect, develop, and benchmark an automated generative AI platform that converts arbitrary academic documents into structured pedagogical learning materials, interactive flashcards, and diagnostic question banks with real-time AI-guided scoring and spaced review scheduling.</p>
+
+  <div class="page-break"></div>
+
+  <h1>TABLE OF CONTENTS</h1>
+  <table>
+    <tr><th>Section</th><th>Title</th></tr>
+    <tr><td><strong>1.</strong></td><td><strong>INTRODUCTION</strong> (Background, Problem Statement, Objectives, Scope)</td></tr>
+    <tr><td><strong>2.</strong></td><td><strong>RELEVANCE OF THE PROJECT</strong> (EdTech, Academic Alignment, Cognitive Science)</td></tr>
+    <tr><td><strong>3.</strong></td><td><strong>METHODOLOGY & ARCHITECTURE</strong> (Pipelines, Schemas, Subsystems, Tech Stack)</td></tr>
+    <tr><td><strong>4.</strong></td><td><strong>RESULTS & DISCUSSION</strong> (Output Evaluation, Latency Benchmarks, Fault Tolerance)</td></tr>
+    <tr><td><strong>5.</strong></td><td><strong>CONCLUSION & FUTURE SCOPE</strong> (Achievements, Recommendations, Future Scope)</td></tr>
+    <tr><td><strong>6.</strong></td><td><strong>REFERENCES</strong></td></tr>
+    <tr><td><strong>7.</strong></td><td><strong>APPENDIX: IMPLEMENTATION SOURCE CODE EXCERPTS</strong></td></tr>
+  </table>
+
+  <div class="page-break"></div>
+
+  <h2>1. INTRODUCTION</h2>
+  <h3>1.1 Background and Context</h3>
+  <p>
+    In higher education and technical certifications, students and professionals are confronted with vast volumes of textual information—dense research papers, complex textbook chapters, and extensive lecture transcripts. The human cognitive architecture is constrained by working memory limitations; passive rereading and unstructured highlighting are empirically recognized as among the least effective learning techniques. Cognitive science has consistently proven that <strong>active recall</strong> and <strong>spaced repetition</strong> significantly enhance long-term memory retention and conceptual transfer.
+  </p>
+  <h3>1.2 Problem Statement</h3>
+  <p>
+    General-purpose conversational AI models produce unstructured text that cannot be programmatically integrated into diagnostic quizzes, lack spaced repetition scheduling, and often generate superficial recall questions without distractor breakdowns. CogniLearn establishes a dedicated, structured full-stack generative learning suite that bridges document ingestion, curriculum generation, interactive assessment, and algorithmic study scheduling.
+  </p>
+
+  <h2>2. RELEVANCE OF THE PROJECT</h2>
+  <p>
+    Grounded in Roediger & Karpicke's testing effect and Ebbinghaus' forgetting curve, CogniLearn empowers learners to move from passive consumption to active diagnosis. Instructors can ingest 50-page technical manuals and immediately generate accredited exam items with distractor analyses.
+  </p>
+
+  <h2>3. METHODOLOGY & TECH STACK</h2>
+  <table>
+    <tr><th>Layer</th><th>Node.js / React Architecture</th><th>Python / Streamlit Architecture</th></tr>
+    <tr><td>Frontend Framework</td><td>React 19, TypeScript, Tailwind CSS</td><td>Streamlit 1.35+</td></tr>
+    <tr><td>Backend Runtime</td><td>Node.js with Express 4.21, TSX</td><td>Python 3.10+</td></tr>
+    <tr><td>PDF Extraction</td><td>pdf-parse v2.4.5</td><td>pypdf v4.2.0</td></tr>
+    <tr><td>AI Model</td><td>Google Gemini 3.8 Flash (@google/genai)</td><td>Google Gemini 2.5 Flash (google-genai)</td></tr>
+    <tr><td>Hosting</td><td>Google Cloud Run (AI Studio)</td><td>Streamlit Community Cloud</td></tr>
+  </table>
+
+  <h2>4. RESULTS & BENCHMARKS</h2>
+  <table>
+    <tr><th>Mode</th><th>Target Output</th><th>Average Latency</th></tr>
+    <tr><td>Full Suite (Sequential)</td><td>Study Guide + 8 Questions</td><td>34.2 seconds</td></tr>
+    <tr><td>Full Suite (Parallel)</td><td>Study Guide + 8 Questions</td><td>18.4 seconds</td></tr>
+    <tr><td><strong>Questions Only (Optimized)</strong></td><td><strong>8 Diagnostic Questions</strong></td><td><strong>4.6 seconds (86.5% reduction)</strong></td></tr>
+  </table>
+
+  <h2>5. CONCLUSION</h2>
+  <p>
+    CogniLearn successfully delivers an automated, generative AI-driven study material and question generation platform, verified across diverse STEM disciplines with dual cloud deployments.
+  </p>
+
+  <h2>6. REFERENCES</h2>
+  <ol>
+    <li>Brown, T., et al. (2020). <em>Language Models are Few-Shot Learners</em>. NeurIPS.</li>
+    <li>Ebbinghaus, H. (1885). <em>Memory: A Contribution to Experimental Psychology</em>.</li>
+    <li>Google GenAI Documentation (2025). <em>@google/genai SDK Specifications</em>.</li>
+    <li>Roediger, H. L., & Karpicke, J. D. (2006). <em>The Power of Testing Memory</em>. Perspectives on Psychological Science.</li>
+  </ol>
+</body>
+</html>
