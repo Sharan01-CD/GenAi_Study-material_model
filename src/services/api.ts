@@ -45,6 +45,26 @@ export async function extractFileText(file: File): Promise<{
   });
 }
 
+async function handleResponse<T = any>(response: Response, defaultError: string): Promise<T> {
+  const resJson = await response.json().catch(() => null);
+  if (!response.ok || !resJson?.success) {
+    const errorStr = typeof resJson?.error === 'string' ? resJson.error : JSON.stringify(resJson?.error || '');
+    if (
+      response.status === 401 ||
+      errorStr.includes('ACCESS_TOKEN_TYPE_UNSUPPORTED') ||
+      errorStr.includes('API key not valid') ||
+      errorStr.includes('UNAUTHENTICATED') ||
+      errorStr.includes('GEMINI_API_KEY')
+    ) {
+      throw new Error(
+        'Gemini API key is not configured or invalid. Please check that an active API key is selected in the AI Studio Settings > Secrets panel.'
+      );
+    }
+    throw new Error(resJson?.error || defaultError);
+  }
+  return resJson.data;
+}
+
 export async function generateStudyMaterial(params: {
   topic: string;
   contextText?: string;
@@ -59,12 +79,8 @@ export async function generateStudyMaterial(params: {
     body: JSON.stringify(params),
   });
 
-  const resJson = await response.json();
-  if (!response.ok || !resJson.success) {
-    throw new Error(resJson.error || 'Failed to generate study material');
-  }
+  const data = await handleResponse<any>(response, 'Failed to generate study material');
 
-  const data = resJson.data;
   return {
     ...data,
     id: `study-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -92,12 +108,8 @@ export async function generateQuestions(params: {
     body: JSON.stringify(params),
   });
 
-  const resJson = await response.json();
-  if (!response.ok || !resJson.success) {
-    throw new Error(resJson.error || 'Failed to generate practice questions');
-  }
+  const data = await handleResponse<any>(response, 'Failed to generate practice questions');
 
-  const data = resJson.data;
   return {
     ...data,
     id: `quiz-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -120,12 +132,7 @@ export async function evaluateAnswer(params: {
     body: JSON.stringify(params),
   });
 
-  const resJson = await response.json();
-  if (!response.ok || !resJson.success) {
-    throw new Error(resJson.error || 'Failed to evaluate answer');
-  }
-
-  return resJson.data;
+  return await handleResponse<AnswerEvaluation>(response, 'Failed to evaluate answer');
 }
 
 export async function explainConcept(params: {
@@ -139,10 +146,5 @@ export async function explainConcept(params: {
     body: JSON.stringify(params),
   });
 
-  const resJson = await response.json();
-  if (!response.ok || !resJson.success) {
-    throw new Error(resJson.error || 'Failed to explain concept');
-  }
-
-  return resJson.data;
+  return await handleResponse<ConceptExplanation>(response, 'Failed to explain concept');
 }

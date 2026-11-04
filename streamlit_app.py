@@ -49,12 +49,21 @@ if "quiz_history" not in st.session_state:
 # ---------------------------------------------------------
 # API Client Setup
 # ---------------------------------------------------------
+def sanitize_api_key(key: str) -> str:
+    if not key:
+        return ""
+    cleaned = str(key).strip().strip('"').strip("'")
+    if cleaned in ["MY_GEMINI_API_KEY", "your_gemini_api_key_here", "your_actual_gemini_api_key_here"]:
+        return ""
+    return cleaned
+
 def get_gemini_client():
-    api_key = (
-        st.secrets.get("GEMINI_API_KEY")
-        or os.environ.get("GEMINI_API_KEY")
-        or st.session_state.get("user_gemini_api_key", "")
+    raw_key = (
+        st.session_state.get("user_gemini_api_key", "")
+        or st.secrets.get("GEMINI_API_KEY", "")
+        or os.environ.get("GEMINI_API_KEY", "")
     )
+    api_key = sanitize_api_key(raw_key)
     if not api_key:
         return None
     return genai.Client(api_key=api_key)
@@ -238,14 +247,32 @@ with st.sidebar:
 
     # API Key Handling
     client = get_gemini_client()
-    if not client:
-        st.warning("⚠️ Gemini API Key not detected in secrets or environment.")
-        user_key = st.text_input("Enter GEMINI_API_KEY", type="password")
+    raw_key = (
+        st.session_state.get("user_gemini_api_key", "")
+        or st.secrets.get("GEMINI_API_KEY", "")
+        or os.environ.get("GEMINI_API_KEY", "")
+    )
+    cleaned_key = sanitize_api_key(raw_key)
+
+    if not cleaned_key:
+        st.warning("⚠️ No valid Gemini API Key found.")
+        user_key = st.text_input(
+            "Paste GEMINI_API_KEY:",
+            type="password",
+            placeholder="AIzaSy...",
+            help="Get your key at https://aistudio.google.com/app/apikey"
+        )
         if user_key:
-            st.session_state.user_gemini_api_key = user_key
+            st.session_state.user_gemini_api_key = user_key.strip()
             st.rerun()
     else:
-        st.success("✅ Gemini AI Connected")
+        st.success(f"🔑 Key Active (...{cleaned_key[-4:] if len(cleaned_key) >= 4 else '***'})")
+        with st.expander("Update / Change API Key"):
+            new_key = st.text_input("New GEMINI_API_KEY:", type="password", placeholder="AIzaSy...")
+            if st.button("Save & Update Key"):
+                st.session_state.user_gemini_api_key = new_key.strip()
+                st.success("API key updated!")
+                st.rerun()
 
     st.markdown("---")
     st.subheader("📚 Deck Status")
@@ -376,7 +403,18 @@ with tab_gen:
 
                     st.success(f"🎉 Generated successfully! Check the 'Questions & Quiz Hub' or 'Study Guide' tab.")
                 except Exception as e:
-                    st.error(f"Generation failed: {e}")
+                    err_msg = str(e)
+                    if "API_KEY_INVALID" in err_msg or "API key not valid" in err_msg:
+                        st.error(
+                            "❌ **API Key Invalid (Error 400)**\n\n"
+                            "The Gemini API key currently configured was rejected by Google.\n\n"
+                            "**How to fix:**\n"
+                            "1. Go to https://aistudio.google.com/app/apikey and create or copy your API key (it begins with `AIzaSy...`).\n"
+                            "2. In the left sidebar under **'Update / Change API Key'**, paste your new key and click Save.\n"
+                            "3. If deployed on Streamlit Cloud, update it in your app's **Settings → Secrets**."
+                        )
+                    else:
+                        st.error(f"Generation failed: {e}")
 
 # ---------------------------------------------------------
 # TAB 2: STUDY GUIDE

@@ -13,15 +13,44 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(express.json({ limit: '35mb' }));
 
-// Server-side Gemini initialization
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-  httpOptions: {
-    headers: {
-      'User-Agent': 'aistudio-build',
+// Server-side Gemini client factory with key sanitization
+function getGeminiClient(): GoogleGenAI {
+  const raw = process.env.GEMINI_API_KEY || '';
+  const apiKey = raw.trim().replace(/^["']|["']$/g, '');
+
+  if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+    throw new Error('GEMINI_API_KEY_UNSET: Gemini API key is not configured. Please select your API key in the AI Studio Settings > Secrets panel.');
+  }
+
+  return new GoogleGenAI({
+    apiKey,
+    httpOptions: {
+      headers: {
+        'User-Agent': 'aistudio-build',
+      },
     },
-  },
-});
+  });
+}
+
+function handleGeminiError(err: any, res: express.Response, defaultMsg: string) {
+  const errMsg = err?.message || String(err);
+  console.error(`${defaultMsg}:`, err);
+
+  if (
+    errMsg.includes('GEMINI_API_KEY_UNSET') ||
+    errMsg.includes('ACCESS_TOKEN_TYPE_UNSUPPORTED') ||
+    errMsg.includes('API key not valid') ||
+    errMsg.includes('UNAUTHENTICATED') ||
+    errMsg.includes('API_KEY_INVALID') ||
+    errMsg.includes('PERMISSION_DENIED')
+  ) {
+    return res.status(401).json({
+      error: 'Gemini API key is missing or invalid. Please check that an active API key is selected in the AI Studio Settings > Secrets panel.',
+    });
+  }
+
+  res.status(500).json({ error: errMsg || defaultMsg });
+}
 
 // Helper to sanitize JSON response from LLM
 function parseGeminiJson<T = any>(rawText: string, fallback: T): T {
@@ -202,7 +231,7 @@ Generate concise, high-yield content adhering to schema. Output pure valid JSON.
     contentParts.push({ text: prompt });
 
     const response = await callGeminiWithRetry(() =>
-      ai.models.generateContent({
+      getGeminiClient().models.generateContent({
         model: 'gemini-3.8-flash',
         contents: { parts: contentParts },
         config: {
@@ -220,8 +249,7 @@ Generate concise, high-yield content adhering to schema. Output pure valid JSON.
 
     res.json({ success: true, data: parsed });
   } catch (error: any) {
-    console.error('Error generating study material:', error);
-    res.status(500).json({ error: error.message || 'Failed to generate study material' });
+    handleGeminiError(error, res, 'Error generating study material');
   }
 });
 
@@ -277,7 +305,7 @@ Quality Rules:
 - Output pure valid JSON.`;
 
     const response = await callGeminiWithRetry(() =>
-      ai.models.generateContent({
+      getGeminiClient().models.generateContent({
         model: 'gemini-3.8-flash',
         contents: prompt,
         config: {
@@ -295,8 +323,7 @@ Quality Rules:
 
     res.json({ success: true, data: parsed });
   } catch (error: any) {
-    console.error('Error generating questions:', error);
-    res.status(500).json({ error: error.message || 'Failed to generate practice questions' });
+    handleGeminiError(error, res, 'Error generating questions');
   }
 });
 
@@ -340,7 +367,7 @@ Evaluate this response and output JSON matching:
 }`;
 
     const response = await callGeminiWithRetry(() =>
-      ai.models.generateContent({
+      getGeminiClient().models.generateContent({
         model: 'gemini-3.8-flash',
         contents: prompt,
         config: {
@@ -358,8 +385,7 @@ Evaluate this response and output JSON matching:
 
     res.json({ success: true, data: parsed });
   } catch (error: any) {
-    console.error('Error evaluating answer:', error);
-    res.status(500).json({ error: error.message || 'Failed to evaluate answer' });
+    handleGeminiError(error, res, 'Error evaluating answer');
   }
 });
 
@@ -396,7 +422,7 @@ Format the response as JSON:
 }`;
 
     const response = await callGeminiWithRetry(() =>
-      ai.models.generateContent({
+      getGeminiClient().models.generateContent({
         model: 'gemini-3.8-flash',
         contents: prompt,
         config: {
@@ -410,8 +436,7 @@ Format the response as JSON:
     const parsed = parseGeminiJson(response.text || '{}', null);
     res.json({ success: true, data: parsed });
   } catch (error: any) {
-    console.error('Error explaining concept:', error);
-    res.status(500).json({ error: error.message || 'Failed to explain concept' });
+    handleGeminiError(error, res, 'Error explaining concept');
   }
 });
 
